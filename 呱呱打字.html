@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>呱呱打字 · 小朋友键盘入门</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#CDEBFF; --sky:#E4F4FF; --pond:#5EC8D8; --pond-deep:#2C9BB5;
+  --pad:#7ED957; --pad-dark:#4FB23A; --ink:#1E2A5A; --ink-soft:#56628F;
+  --card:#FFFFFF; --key-bg:#FFFFFF; --key-edge:#B4C3E6; --sun:#FFD23F; --bad:#FF5A6E;
+  --f-lp:#9B7BFF; --f-lr:#3FA7FF; --f-lm:#2EC27E; --f-li:#FF9F1C; --f-th:#FF6F91;
+  --f-ri:#FF9F1C; --f-rm:#2EC27E; --f-rr:#3FA7FF; --f-rp:#9B7BFF;
+  --font:"Baloo 2","ZCOOL KuaiLe","PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#122046; --sky:#1A2B5A; --pond:#1F6A86; --pond-deep:#15475F;
+    --pad:#5DBB45; --pad-dark:#3E8F2C; --ink:#EEF3FF; --ink-soft:#AFC0EA;
+    --card:#1E2D5E; --key-bg:#26386F; --key-edge:#3A4F8F; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#122046; --sky:#1A2B5A; --pond:#1F6A86; --pond-deep:#15475F;
+  --pad:#5DBB45; --pad-dark:#3E8F2C; --ink:#EEF3FF; --ink-soft:#AFC0EA;
+  --card:#1E2D5E; --key-bg:#26386F; --key-edge:#3A4F8F; color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);min-height:100vh;-webkit-tap-highlight-color:transparent}
+button{font-family:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--sun);outline-offset:3px}
+.wrap{max-width:980px;margin:0 auto;padding:16px 16px 40px}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.brand{display:flex;align-items:center;gap:8px;font-family:"ZCOOL KuaiLe",var(--font);font-size:26px;background:none;border:0;padding:4px}
+.brand svg{width:40px;height:40px}
+.spacer{flex:1}
+.pill{background:var(--card);border:2px solid var(--key-edge);border-radius:999px;padding:6px 14px;font-size:16px;font-weight:700;display:inline-flex;align-items:center;gap:6px}
+.screen{display:none}
+.screen.on{display:block}
+
+/* home */
+.hero{display:flex;align-items:center;gap:20px;padding:18px 4px 8px;flex-wrap:wrap}
+.hero .big-frog{width:130px;height:130px;flex:none;animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-6px)}}
+.hero h1{font-family:"ZCOOL KuaiLe",var(--font);font-size:clamp(36px,7vw,58px);line-height:1;margin:0 0 8px;font-weight:400}
+.hero p{margin:0;font-size:18px;color:var(--ink-soft);max-width:34em;line-height:1.5}
+.section-title{font-family:"ZCOOL KuaiLe",var(--font);font-size:24px;margin:26px 0 12px;font-weight:400}
+.path{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:14px}
+.lvl{background:var(--card);border:3px solid var(--key-edge);border-radius:22px;padding:12px 10px 10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px;transition:transform .15s}
+.lvl:hover{transform:translateY(-3px)}
+.lvl:active{transform:scale(.97)}
+.lvl .num{width:46px;height:46px;border-radius:50% 50% 50% 8px;background:var(--pad);color:#173B12;font-weight:800;font-size:22px;display:grid;place-items:center;box-shadow:inset 0 -4px 0 var(--pad-dark)}
+.lvl.next{border-color:var(--sun);box-shadow:0 0 0 4px color-mix(in srgb,var(--sun) 35%,transparent)}
+.lvl .t{font-size:17px;font-weight:700;line-height:1.2;min-height:2.4em;display:flex;align-items:center}
+.lvl .s{font-size:16px;letter-spacing:2px}
+.game-card{margin-top:20px;width:100%;background:linear-gradient(160deg,var(--pond),var(--pond-deep));color:#fff;border:0;border-radius:26px;padding:20px 22px;display:flex;align-items:center;gap:18px;text-align:left;position:relative;overflow:hidden}
+.game-card .b{font-size:46px}
+.game-card h3{margin:0;font-family:"ZCOOL KuaiLe",var(--font);font-size:26px;font-weight:400}
+.game-card p{margin:2px 0 0;font-size:16px;opacity:.9}
+.note{margin-top:16px;background:var(--card);border-radius:16px;padding:12px 16px;font-size:16px;color:var(--ink-soft);display:none}
+
+/* lesson */
+.lesson-head{display:flex;align-items:center;gap:12px;margin:6px 0 10px}
+.back{background:var(--card);border:2px solid var(--key-edge);border-radius:14px;padding:6px 14px;font-size:17px;font-weight:700}
+.lesson-head h2{margin:0;font-family:"ZCOOL KuaiLe",var(--font);font-weight:400;font-size:24px;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar{height:14px;background:var(--card);border-radius:99px;overflow:hidden;border:2px solid var(--key-edge)}
+.bar i{display:block;height:100%;width:0;background:var(--pad);border-radius:99px;transition:width .3s}
+.tip{font-size:16px;color:var(--ink-soft);margin:8px 2px 10px}
+.pond{position:relative;height:150px;border-radius:28px;background:linear-gradient(180deg,var(--pond),var(--pond-deep));overflow:hidden}
+.pond::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 40px 6px at 20% 70%,rgba(255,255,255,.25),transparent),radial-gradient(ellipse 60px 7px at 70% 30%,rgba(255,255,255,.2),transparent),radial-gradient(ellipse 30px 5px at 88% 82%,rgba(255,255,255,.22),transparent)}
+.strip{position:absolute;left:0;top:0;height:100%;display:flex;align-items:center;gap:14px;transition:transform .38s cubic-bezier(.3,.7,.3,1)}
+.lily{flex:none;width:76px;height:62px;border-radius:50%;background:var(--pad);box-shadow:inset 0 -6px 0 var(--pad-dark);display:grid;place-items:center;font-size:30px;font-weight:800;color:#173B12;position:relative;margin-top:44px;transition:opacity .3s,transform .3s}
+.lily::after{content:"";position:absolute;top:50%;right:6px;width:22px;height:4px;background:var(--pond-deep);transform:rotate(-20deg);border-radius:2px}
+.lily.space{font-size:15px}
+.lily.done{opacity:.45}
+.lily.target{transform:scale(1.15);box-shadow:inset 0 -6px 0 var(--pad-dark),0 0 0 5px var(--sun)}
+.lily.start{background:#C68A4B;box-shadow:inset 0 -6px 0 #8E5B2A;color:#fff;font-size:15px;border-radius:18px}
+.lily.start::after,.lily.goal::after{display:none}
+.lily.goal{background:#FFB7D0;box-shadow:inset 0 -6px 0 #E37DA3;font-size:32px}
+.lily.wobble{animation:wob .35s}
+@keyframes wob{25%{transform:scale(1.15) rotate(-8deg)}75%{transform:scale(1.15) rotate(8deg)}}
+.frog{position:absolute;width:74px;height:74px;top:14px;z-index:2;pointer-events:none}
+.frog.hop{animation:hop .38s ease-out}
+@keyframes hop{40%{transform:translateY(-36px) scale(1.05,.95)}100%{transform:none}}
+.frog.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+.prompt{display:flex;align-items:center;justify-content:center;gap:18px;margin:16px 0 14px;min-height:96px;flex-wrap:wrap;text-align:center}
+.prompt .kbig{min-width:86px;height:86px;padding:0 16px;border-radius:20px;background:var(--key-bg);border:3px solid var(--fc,var(--key-edge));box-shadow:0 6px 0 var(--fc,var(--key-edge));font-size:50px;font-weight:800;display:grid;place-items:center}
+.prompt .kbig.sp{font-size:24px;min-width:180px}
+.prompt .say{font-size:22px;line-height:1.4}
+.prompt .say b{color:var(--fc);font-weight:800}
+.word{font-size:clamp(34px,7vw,52px);font-weight:800;letter-spacing:6px}
+.word .ok{color:var(--pad-dark)}
+.word .cur{text-decoration:underline;text-decoration-color:var(--sun);text-decoration-thickness:5px;text-underline-offset:8px}
+.emoji{font-size:58px}
+
+/* keyboard */
+.kb{background:var(--card);border-radius:24px;padding:12px;display:flex;flex-direction:column;gap:7px;user-select:none}
+.row{display:flex;gap:6px;justify-content:center}
+.key{--f:var(--key-edge);flex:1 1 0;max-width:62px;aspect-ratio:1/1;border-radius:12px;border:2px solid color-mix(in srgb,var(--f) 60%,var(--key-edge));background:color-mix(in srgb,var(--f) 20%,var(--key-bg));box-shadow:0 4px 0 color-mix(in srgb,var(--f) 55%,var(--key-edge));font-size:clamp(14px,3.4vw,24px);font-weight:700;display:grid;place-items:center;position:relative;padding:0;transition:transform .08s}
+.key.bump::after{content:"";position:absolute;bottom:18%;width:30%;height:3px;border-radius:2px;background:currentColor;opacity:.6}
+.key.space{max-width:340px;flex:6 1 0;aspect-ratio:auto;height:clamp(34px,7vw,52px);font-size:16px}
+.key.target{background:var(--f);color:#fff;border-color:var(--f);animation:pulse 1s ease-in-out infinite;z-index:1}
+@keyframes pulse{50%{transform:translateY(-3px) scale(1.06)}}
+.key.glow{outline:3px dashed var(--f);outline-offset:1px}
+.key.press{transform:translateY(3px);box-shadow:0 1px 0 var(--f)}
+.key.bad{background:var(--bad)!important;color:#fff;border-color:var(--bad)}
+.row.r2{padding-left:2.5%}.row.r3{padding-left:6%}
+
+.hands{display:flex;justify-content:center;gap:56px;margin-top:16px}
+.hand{display:flex;align-items:flex-end;gap:5px}
+.fg{width:clamp(16px,3.6vw,24px);border-radius:12px 12px 6px 6px;background:var(--fcol);opacity:.28;transition:opacity .2s,transform .2s}
+.fg.on{opacity:1;transform:translateY(-8px)}
+.fg[data-f$="p"]{height:44px}.fg[data-f$="r"]{height:58px}.fg[data-f$="m"]{height:66px}.fg[data-f$="i"]{height:58px}.fg.th{height:32px;margin-bottom:-6px}
+.hand-label{text-align:center;font-size:14px;color:var(--ink-soft);margin-top:6px}
+
+/* game */
+.arena{position:relative;height:min(52vh,380px);border-radius:28px;background:linear-gradient(180deg,var(--sky),var(--pond) 70%,var(--pond-deep));overflow:hidden;margin-bottom:14px}
+.bubble{position:absolute;width:68px;height:68px;margin-left:-34px;border-radius:50%;background:radial-gradient(circle at 32% 28%,rgba(255,255,255,.95) 0 10%,rgba(255,255,255,.35) 11% 40%,rgba(255,255,255,.15) 41%);border:3px solid rgba(255,255,255,.85);display:grid;place-items:center;font-size:32px;font-weight:800;color:var(--ink)}
+.bubble.pop{animation:pop .3s forwards}
+@keyframes pop{to{transform:scale(1.7);opacity:0}}
+.arena .hud{position:absolute;top:10px;left:12px;right:12px;display:flex;justify-content:space-between;z-index:2}
+.arena .center{position:absolute;inset:0;display:grid;place-items:center;text-align:center;z-index:3;padding:20px}
+.cta{background:var(--sun);color:#3A2A00;border:0;border-radius:18px;padding:12px 28px;font-size:22px;font-weight:800;box-shadow:0 5px 0 #D9A900}
+.cta:active{transform:translateY(3px);box-shadow:0 2px 0 #D9A900}
+.cta.ghost{background:var(--card);color:var(--ink);box-shadow:0 5px 0 var(--key-edge)}
+
+/* result */
+.modal{position:fixed;inset:0;background:rgba(10,20,50,.55);display:none;place-items:center;z-index:20;padding:20px}
+.modal.on{display:grid}
+.card{background:var(--card);border-radius:30px;padding:26px 24px;text-align:center;max-width:380px;width:100%}
+.card h3{font-family:"ZCOOL KuaiLe",var(--font);font-weight:400;font-size:32px;margin:6px 0}
+.stars{font-size:52px;letter-spacing:6px;margin:6px 0}
+.stars span{display:inline-block;opacity:.2;transform:scale(.5);transition:.35s}
+.stars span.lit{opacity:1;transform:scale(1)}
+.card p{font-size:18px;color:var(--ink-soft);margin:4px 0 18px}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(120px);background:var(--ink);color:var(--bg);padding:12px 20px;border-radius:16px;font-size:17px;z-index:30;transition:transform .3s;max-width:90vw;text-align:center}
+.toast.on{transform:translateX(-50%)}
+@media (max-width:560px){
+  .lily{width:58px;height:48px;font-size:24px;margin-top:50px}
+  .frog{width:60px;height:60px;top:22px}
+  .hands{gap:28px}
+  .kb{padding:8px;gap:5px}.row{gap:4px}
+  .key{border-radius:8px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <button class="brand" id="homeBtn" aria-label="回到首页"><svg viewBox="0 0 100 100"><use href="#frogSym"/></svg>呱呱打字</button>
+    <div class="spacer"></div>
+    <span class="pill" id="starTotal">⭐ 0</span>
+    <button class="pill" id="soundBtn" aria-label="声音开关">🔊</button>
+  </div>
+
+  <!-- HOME -->
+  <section class="screen on" id="home">
+    <div class="hero">
+      <svg class="big-frog" viewBox="0 0 100 100"><use href="#frogSym"/></svg>
+      <div>
+        <h1>跟着小青蛙学打字</h1>
+        <p>按对一个键，小青蛙就跳到下一片荷叶。先从 F 和 J 开始，一课一课往前跳吧！</p>
+      </div>
+    </div>
+    <h2 class="section-title">荷叶小路</h2>
+    <div class="path" id="path"></div>
+    <button class="game-card" id="gameBtn">
+      <span class="b">🫧</span>
+      <span><h3>泡泡大作战</h3><p id="gameDesc">用学过的字母戳破泡泡，看看一分钟能戳几个</p></span>
+    </button>
+    <div class="note" id="touchNote">💡 接上实体键盘练习效果最好。没有键盘也可以直接点屏幕上的按键。</div>
+  </section>
+
+  <!-- LESSON -->
+  <section class="screen" id="lesson">
+    <div class="lesson-head">
+      <button class="back" data-home>← 回去</button>
+      <h2 id="lTitle"></h2>
+    </div>
+    <div class="bar"><i id="lBar"></i></div>
+    <div class="tip" id="lTip"></div>
+    <div class="pond" id="pond">
+      <div class="strip" id="strip"></div>
+      <svg class="frog" id="frog" viewBox="0 0 100 100"><use href="#frogSym"/></svg>
+    </div>
+    <div class="prompt" id="prompt"></div>
+    <div class="kb" id="kbL"></div>
+    <div class="hands" id="handsL"></div>
+  </section>
+
+  <!-- GAME -->
+  <section class="screen" id="game">
+    <div class="lesson-head">
+      <button class="back" data-home>← 回去</button>
+      <h2>泡泡大作战</h2>
+    </div>
+    <div class="arena" id="arena">
+      <div class="hud"><span class="pill" id="gScore">🫧 0</span><span class="pill" id="gTime">⏱ 60</span></div>
+      <div class="center" id="gCenter"></div>
+    </div>
+    <div class="kb" id="kbG"></div>
+  </section>
+</div>
+
+<div class="modal" id="modal"><div class="card" id="mCard"></div></div>
+<div class="toast" id="toast"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="frogSym" viewBox="0 0 100 100">
+    <ellipse cx="50" cy="66" rx="38" ry="28" fill="#5BC236"/>
+    <ellipse cx="50" cy="74" rx="24" ry="15" fill="#BDEB8F"/>
+    <circle cx="30" cy="38" r="15" fill="#5BC236"/><circle cx="70" cy="38" r="15" fill="#5BC236"/>
+    <circle cx="30" cy="37" r="10" fill="#fff"/><circle cx="70" cy="37" r="10" fill="#fff"/>
+    <circle cx="32" cy="38" r="5" fill="#1E2A5A"/><circle cx="68" cy="38" r="5" fill="#1E2A5A"/>
+    <circle cx="34" cy="36" r="1.6" fill="#fff"/><circle cx="70" cy="36" r="1.6" fill="#fff"/>
+    <path d="M36 60 Q50 72 64 60" stroke="#1E2A5A" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="24" cy="60" rx="5" ry="3" fill="#FF8FAB" opacity=".8"/><ellipse cx="76" cy="60" rx="5" ry="3" fill="#FF8FAB" opacity=".8"/>
+    <ellipse cx="22" cy="91" rx="12" ry="5" fill="#4AA82A"/><ellipse cx="78" cy="91" rx="12" ry="5" fill="#4AA82A"/>
+  </symbol>
+</svg>
+
+<script>
+(() => {
+const $ = s => document.querySelector(s);
+const ROWS = ['qwertyuiop','asdfghjkl;','zxcvbnm,.'];
+const FMAP = {};
+[['lp','qaz'],['lr','wsx'],['lm','edc'],['li','rfvtgb'],['ri','yhnujm'],['rm','ik,'],['rr','ol.'],['rp','p;']]
+  .forEach(([f,ks]) => [...ks].forEach(k => FMAP[k]=f));
+FMAP[' ']='th';
+const FNAME = {lp:'左手小指',lr:'左手无名指',lm:'左手中指',li:'左手食指',th:'大拇指',ri:'右手食指',rm:'右手中指',rr:'右手无名指',rp:'右手小指'};
+const fcol = f => `var(--f-${f})`;
+
+const LESSONS = [
+  {t:'找到 F 和 J', k:'fj', tip:'摸一摸，F 和 J 上有小凸起。两个食指放在上面，大拇指按空格。'},
+  {t:'D 和 K', k:'dk', tip:'中指放在 F、J 旁边的 D 和 K 上。'},
+  {t:'S 和 L', k:'sl', tip:'无名指放在 S 和 L 上，手指像小青蛙一样排好队。'},
+  {t:'A 和 ;', k:'a;', tip:'小指负责最边上的 A 和 ;。'},
+  {t:'G 和 H', k:'gh', tip:'食指往中间伸一下就能按到 G 和 H，按完回家。'},
+  {t:'E 和 I', k:'ei', tip:'中指往上伸，按完记得回到 D 和 K。'},
+  {t:'R 和 U', k:'ru', tip:'食指往上伸一点点。'},
+  {t:'T 和 Y', k:'ty', tip:'食指往上、往中间伸。'},
+  {t:'W 和 O', k:'wo', tip:'无名指往上伸。'},
+  {t:'Q 和 P', k:'qp', tip:'小指往上伸，有点难，慢慢来！'},
+  {t:'V N M C', k:'vnmc', tip:'下面一排：食指往下按 V、N、M，中指按 C。'},
+  {t:'B X Z', k:'bxz', tip:'食指按 B，无名指按 X，小指按 Z。'},
+  {t:'小单词', words:3, tip:'看图打单词，打完一个按空格。'},
+  {t:'长一点的单词', words:4, tip:'四个字母的单词，你一定可以！'}
+];
+const WORDS = {
+  3:[['cat','🐱'],['dog','🐶'],['sun','☀️'],['hat','🎩'],['egg','🥚'],['pig','🐷'],['cup','☕'],['bus','🚌'],['car','🚗'],['bee','🐝'],['fox','🦊'],['owl','🦉'],['cow','🐮'],['ant','🐜'],['box','📦'],['red','🔴']],
+  4:[['fish','🐟'],['bird','🐦'],['frog','🐸'],['cake','🎂'],['star','⭐'],['moon','🌙'],['tree','🌳'],['book','📖'],['duck','🦆'],['milk','🥛'],['lion','🦁'],['bear','🐻'],['ship','🚢'],['kite','🪁'],['ball','⚽'],['rain','🌧️']]
+};
+
+// ---------- storage ----------
+let save = {stars:{}, sound:true};
+try { const s = JSON.parse(localStorage.getItem('guagua-typing-v1')); if (s) save = Object.assign(save, s); } catch(e){}
+const persist = () => { try { localStorage.setItem('guagua-typing-v1', JSON.stringify(save)); } catch(e){} };
+
+// ---------- sound ----------
+let actx;
+function tone(freq, dur=.12, type='sine', vol=.14, delay=0){
+  if (!save.sound) return;
+  try {
+    actx = actx || new (window.AudioContext||window.webkitAudioContext)();
+    const t = actx.currentTime + delay, o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(vol, t); g.gain.exponentialRampToValueAtTime(.001, t+dur);
+    o.connect(g).connect(actx.destination); o.start(t); o.stop(t+dur);
+  } catch(e){}
+}
+const sGood = n => tone(520 + Math.min(n,12)*30, .1, 'triangle');
+const sBad = () => tone(150, .18, 'sine', .12);
+const sWin = () => [523,659,784,1047].forEach((f,i)=>tone(f,.22,'triangle',.14,i*.12));
+const sPop = () => { tone(900,.06,'square',.06); tone(1400,.05,'sine',.08,.03); };
+function say(text){
+  if (!save.sound || !window.speechSynthesis || !text.trim()) return;
+  try { speechSynthesis.cancel(); const u = new SpeechSynthesisUtterance(text); u.lang='en-US'; u.rate=.85; speechSynthesis.speak(u); } catch(e){}
+}
+const speakKey = k => say(k===';' ? 'semicolon' : k);
+
+// ---------- ui helpers ----------
+function toast(msg){ const t=$('#toast'); t.textContent=msg; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'),2600); }
+function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.toggle('on', s.id===id)); current=id; window.scrollTo(0,0); }
+let current='home';
+const label = k => k===' ' ? '空格' : k.toUpperCase();
+
+function buildKeyboard(el, onTap){
+  el.innerHTML='';
+  ROWS.forEach((r,i)=>{
+    const row=document.createElement('div'); row.className='row r'+(i+1);
+    [...r].forEach(k=>row.appendChild(makeKey(k,onTap))); el.appendChild(row);
+  });
+  const row=document.createElement('div'); row.className='row'; row.appendChild(makeKey(' ',onTap)); el.appendChild(row);
+}
+function makeKey(k,onTap){
+  const b=document.createElement('button'); b.className='key'+(k===' '?' space':'')+((k==='f'||k==='j')?' bump':'');
+  b.dataset.k=k; b.textContent=label(k); b.style.setProperty('--f', fcol(FMAP[k])); b.tabIndex=-1;
+  b.addEventListener('pointerdown', e=>{ e.preventDefault(); onTap(k); });
+  return b;
+}
+function keyEl(kb,k){ return kb.querySelector(`.key[data-k="${CSS.escape(k)}"]`); }
+function flashKey(kb,k,bad){
+  const el=keyEl(kb,k); if(!el) return;
+  el.classList.add(bad?'bad':'press'); setTimeout(()=>el.classList.remove('bad','press'), bad?280:120);
+}
+function buildHands(el){
+  const mk=f=>`<div class="fg${f==='th'?' th':''}" data-f="${f}" style="--fcol:${fcol(f)}"></div>`;
+  el.innerHTML=`<div><div class="hand">${['lp','lr','lm','li','th'].map(mk).join('')}</div><div class="hand-label">左手</div></div>
+  <div><div class="hand">${['th','ri','rm','rr','rp'].map(mk).join('')}</div><div class="hand-label">右手</div></div>`;
+}
+
+// ---------- home ----------
+function totalStars(){ return Object.values(save.stars).reduce((a,b)=>a+b,0); }
+function renderHome(){
+  $('#starTotal').textContent='⭐ '+totalStars();
+  const nextIdx = LESSONS.findIndex((_,i)=>!save.stars[i]);
+  $('#path').innerHTML = LESSONS.map((l,i)=>{
+    const s=save.stars[i]||0;
+    return `<button class="lvl${i===nextIdx?' next':''}" data-i="${i}">
+      <span class="num">${i+1}</span><span class="t">${l.t}</span>
+      <span class="s">${'⭐'.repeat(s)}<span style="opacity:.25">${'⭐'.repeat(3-s)}</span></span></button>`;
+  }).join('');
+  $('#path').querySelectorAll('.lvl').forEach(b=>b.onclick=()=>startLesson(+b.dataset.i));
+  $('#gameDesc').textContent = '用这些字母戳泡泡：'+gamePool().map(k=>k.toUpperCase()).join(' ');
+}
+
+// ---------- lesson ----------
+const kbL=$('#kbL'), handsL=$('#handsL');
+let L=null;
+function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+function genSeq(i){
+  const les=LESSONS[i];
+  if (les.words){
+    const pool=[...WORDS[les.words]].sort(()=>Math.random()-.5).slice(0,6);
+    const seq=[], wmap=[];
+    pool.forEach(([w,e],wi)=>{ [...w].forEach(c=>{seq.push(c);wmap.push(wi);}); if(wi<pool.length-1){seq.push(' ');wmap.push(wi);} });
+    return {seq,wmap,words:pool};
+  }
+  const nk=[...les.k], old=LESSONS.slice(0,i).filter(x=>x.k).flatMap(x=>[...x.k]);
+  const seq=[]; const groups = i===0?8:7, glen = i===0?2:3;
+  for(let g=0;g<groups;g++){
+    for(let c=0;c<glen;c++) seq.push(!old.length||Math.random()<.7?pick(nk):pick(old));
+    if(g<groups-1) seq.push(' ');
+  }
+  return {seq};
+}
+function startLesson(i){
+  const g=genSeq(i);
+  L={i, ...g, pos:0, errors:0, combo:0, done:false};
+  $('#lTitle').textContent=`第 ${i+1} 课 · ${LESSONS[i].t}`;
+  $('#lTip').textContent=LESSONS[i].tip;
+  const strip=$('#strip');
+  strip.innerHTML = `<div class="lily start">起点</div>` +
+    L.seq.map(k=>`<div class="lily${k===' '?' space':''}">${k===' '?'空格':k.toUpperCase()}</div>`).join('') +
+    `<div class="lily goal">🌸</div>`;
+  show('lesson');
+  layoutStrip(false);
+  updateLesson();
+}
+function step(){ const p=$('#strip').children; return p[1].offsetLeft - p[0].offsetLeft; }
+function layoutStrip(anim=true){
+  if(!L) return;
+  const strip=$('#strip'), pond=$('#pond'), pads=strip.children;
+  const frogX = Math.max(20, pond.clientWidth*.22);
+  const padW = pads[0].offsetWidth, frog=$('#frog');
+  strip.style.transition = anim?'':'none';
+  strip.style.transform = `translateX(${frogX - pads[0].offsetLeft - L.pos*step()}px)`;
+  frog.style.left = (frogX + padW/2 - frog.clientWidth/2)+'px';
+  if(!anim){ strip.offsetWidth; strip.style.transition=''; }
+}
+function updateLesson(){
+  const pads=$('#strip').children;
+  [...pads].forEach((p,idx)=>{ p.classList.toggle('done', idx>0 && idx<=L.pos); p.classList.toggle('target', idx===L.pos+1 && !L.done); });
+  $('#lBar').style.width = (L.pos/L.seq.length*100)+'%';
+  kbL.querySelectorAll('.key').forEach(k=>k.classList.remove('target'));
+  handsL.querySelectorAll('.fg').forEach(f=>f.classList.remove('on'));
+  if (L.done) return;
+  const k=L.seq[L.pos], f=FMAP[k];
+  keyEl(kbL,k)?.classList.add('target');
+  handsL.querySelectorAll(`.fg[data-f="${f}"]`).forEach(x=>x.classList.add('on'));
+  const pr=$('#prompt'); pr.style.setProperty('--fc', fcol(f));
+  if (L.words){
+    const wi=L.wmap[L.pos], [w,e]=L.words[wi];
+    let start=L.seq.findIndex((_,x)=>L.wmap[x]===wi);
+    const html=[...w].map((c,ci)=>{ const gi=start+ci; return `<span class="${gi<L.pos?'ok':gi===L.pos?'cur':''}">${c.toUpperCase()}</span>`; }).join('');
+    pr.innerHTML = `<span class="emoji">${e}</span><div><div class="word">${html}</div><div class="say">${k===' '?'打完啦，用 <b>大拇指</b> 按空格':'用 <b>'+FNAME[f]+'</b> 按 '+k.toUpperCase()}</div></div>`;
+    if (L.pos===start) say(w);
+  } else {
+    pr.innerHTML = `<div class="kbig${k===' '?' sp':''}">${label(k)}</div><div class="say">用 <b>${FNAME[f]}</b><br>按这个键</div>`;
+    if (k!==' ') speakKey(k);
+  }
+}
+function lessonKey(k){
+  if(!L||L.done) return;
+  const want=L.seq[L.pos], frog=$('#frog');
+  if(k===want){
+    flashKey(kbL,k,false); L.combo++; sGood(L.combo);
+    L.pos++; frog.classList.remove('hop'); frog.offsetWidth; frog.classList.add('hop');
+    layoutStrip();
+    if(L.pos>=L.seq.length){ L.done=true; updateLesson(); setTimeout(()=>{ L.pos++; layoutStrip(); frog.classList.remove('hop'); frog.offsetWidth; frog.classList.add('hop'); },420); setTimeout(finishLesson,1000); }
+    else updateLesson();
+  } else {
+    L.errors++; L.combo=0; sBad(); flashKey(kbL,k,true);
+    frog.classList.remove('shake'); frog.offsetWidth; frog.classList.add('shake');
+    const t=$('#strip').children[L.pos+1]; t.classList.remove('wobble'); t.offsetWidth; t.classList.add('wobble');
+  }
+}
+function finishLesson(){
+  const n=L.seq.length, acc=Math.round(n/(n+L.errors)*100);
+  const stars = acc>=95?3:acc>=80?2:1;
+  save.stars[L.i]=Math.max(save.stars[L.i]||0,stars); persist(); sWin();
+  const msg = stars===3?'太棒了！':stars===2?'真不错！':'跳到终点啦！';
+  const hasNext = L.i < LESSONS.length-1;
+  openModal(`<svg viewBox="0 0 100 100" width="90" height="90"><use href="#frogSym"/></svg>
+    <h3>${msg}</h3><div class="stars">${[0,1,2].map(()=>'<span>⭐</span>').join('')}</div>
+    <p>正确率 ${acc}%${stars<3?'，再慢一点、看准了再按，就能拿 3 颗星':''}</p>
+    <div class="btns"><button class="cta ghost" id="again">再练一次</button>${hasNext?'<button class="cta" id="next">下一课</button>':'<button class="cta" id="toGame">去戳泡泡</button>'}</div>`);
+  const sp=document.querySelectorAll('#mCard .stars span');
+  for(let s=0;s<stars;s++) setTimeout(()=>{sp[s].classList.add('lit'); tone(700+s*200,.15,'triangle');},300+s*300);
+  $('#again').onclick=()=>{closeModal(); startLesson(L.i);};
+  if(hasNext) $('#next').onclick=()=>{closeModal(); startLesson(L.i+1);};
+  else $('#toGame').onclick=()=>{closeModal(); startGame();};
+}
+function openModal(html){ $('#mCard').innerHTML=html; $('#modal').classList.add('on'); setTimeout(()=>$('#mCard .cta:last-child')?.focus(),50); }
+function closeModal(){ $('#modal').classList.remove('on'); }
+
+// ---------- game ----------
+const kbG=$('#kbG'), arena=$('#arena');
+let G=null;
+function gamePool(){
+  const learned=LESSONS.filter((l,i)=>l.k&&save.stars[i]).flatMap(l=>[...l.k]).filter(k=>k!==';');
+  return learned.length>=2?learned:[...'fjdksl'];
+}
+function startGame(){
+  show('game'); stopGame();
+  arena.querySelectorAll('.bubble').forEach(b=>b.remove());
+  $('#gScore').textContent='🫧 0'; $('#gTime').textContent='⏱ 60';
+  $('#gCenter').style.display='grid';
+  $('#gCenter').innerHTML=`<div><div style="font-size:20px;margin-bottom:14px">泡泡上是哪个字母，就按哪个键</div><button class="cta" id="gGo">开始</button><div style="margin-top:10px;font-size:15px">也可以按空格开始</div></div>`;
+  $('#gGo').onclick=runGame;
+  G={running:false};
+}
+function runGame(){
+  $('#gCenter').style.display='none';
+  G={running:true, score:0, left:60, bubbles:[], spawnIn:0, last:performance.now(), elapsed:0, pool:gamePool()};
+  requestAnimationFrame(loop);
+}
+function stopGame(){ if(G) G.running=false; }
+function loop(now){
+  if(!G||!G.running||current!=='game') return;
+  const dt=Math.min(.05,(now-G.last)/1000); G.last=now; G.elapsed+=dt;
+  G.left-=dt; $('#gTime').textContent='⏱ '+Math.max(0,Math.ceil(G.left));
+  if(G.left<=0) return endGame();
+  G.spawnIn-=dt;
+  const H=arena.clientHeight, W=arena.clientWidth;
+  if(G.spawnIn<=0 && G.bubbles.length<6){
+    const k=pick(G.pool), el=document.createElement('div');
+    el.className='bubble'; el.textContent=k.toUpperCase();
+    const b={k,el,y:-70,x:10+Math.random()*80,speed:28+G.elapsed*1.1+Math.random()*10,wob:Math.random()*6};
+    el.style.left=b.x+'%'; arena.appendChild(el); G.bubbles.push(b);
+    G.spawnIn=Math.max(.9,2-G.elapsed*.02);
+  }
+  G.bubbles=G.bubbles.filter(b=>{
+    b.y+=b.speed*dt;
+    b.el.style.bottom=b.y+'px';
+    b.el.style.transform=`translateX(${Math.sin(G.elapsed*2+b.wob)*6}px)`;
+    if(b.y>H){ b.el.remove(); return false; }
+    return true;
+  });
+  kbG.querySelectorAll('.key').forEach(el=>el.classList.toggle('glow', G.bubbles.some(b=>b.k===el.dataset.k)));
+  requestAnimationFrame(loop);
+}
+function gameKey(k){
+  if(!G) return;
+  if(!G.running){ if(k===' ' && $('#gCenter').style.display!=='none' && $('#gGo')) runGame(); return; }
+  const hits=G.bubbles.filter(b=>b.k===k).sort((a,b)=>b.y-a.y);
+  if(hits.length){
+    const b=hits[0]; G.bubbles=G.bubbles.filter(x=>x!==b);
+    b.el.classList.add('pop'); setTimeout(()=>b.el.remove(),300);
+    G.score++; $('#gScore').textContent='🫧 '+G.score; sPop(); flashKey(kbG,k,false);
+  } else { sBad(); flashKey(kbG,k,true); }
+}
+function endGame(){
+  G.running=false; sWin();
+  G.bubbles.forEach(b=>b.el.remove()); G.bubbles=[];
+  kbG.querySelectorAll('.key').forEach(el=>el.classList.remove('glow'));
+  const best=Math.max(save.best||0,G.score), isBest=G.score>(save.best||0)&&G.score>0;
+  save.best=best; persist();
+  $('#gCenter').style.display='grid';
+  $('#gCenter').innerHTML=`<div style="background:var(--card);border-radius:24px;padding:20px 26px">
+    <div style="font-size:22px">时间到！你戳破了</div>
+    <div style="font-size:64px;font-weight:800;line-height:1.1">${G.score} <span style="font-size:24px">个泡泡</span></div>
+    <div style="font-size:17px;color:var(--ink-soft);margin-bottom:14px">${isBest?'🎉 新纪录！':'最高纪录：'+best+' 个'}</div>
+    <button class="cta" id="gGo">再玩一次</button></div>`;
+  $('#gGo').onclick=runGame;
+}
+
+// ---------- input ----------
+function handle(k){
+  if($('#modal').classList.contains('on')){ return; }
+  if(current==='lesson') lessonKey(k);
+  else if(current==='game') gameKey(k);
+}
+window.addEventListener('keydown', e=>{
+  if(e.ctrlKey||e.metaKey||e.altKey) return;
+  if(e.key==='Process'||e.isComposing){ toast('现在是中文输入法哦，请切换到英文（试试按 Shift 键）'); return; }
+  if($('#modal').classList.contains('on')){
+    if(e.key==='Enter'||e.key===' '){ e.preventDefault(); $('#mCard .cta:last-child')?.click(); }
+    return;
+  }
+  if(e.key==='Escape' && current!=='home'){ goHome(); return; }
+  let k=e.key.length===1?e.key.toLowerCase():null;
+  if(k==='：') k=';';
+  if(!k||current==='home') return;
+  if(!ROWS.join('').includes(k) && k!==' ') return;
+  e.preventDefault(); handle(k);
+});
+
+function goHome(){ stopGame(); closeModal(); L=null; renderHome(); show('home'); }
+document.querySelectorAll('[data-home]').forEach(b=>b.onclick=goHome);
+$('#homeBtn').onclick=goHome;
+$('#gameBtn').onclick=startGame;
+const sb=$('#soundBtn');
+const paintSound=()=>sb.textContent=save.sound?'🔊':'🔇';
+sb.onclick=()=>{ save.sound=!save.sound; persist(); paintSound(); if(!save.sound&&window.speechSynthesis) speechSynthesis.cancel(); };
+paintSound();
+window.addEventListener('resize',()=>layoutStrip(false));
+
+buildKeyboard(kbL, handle); buildKeyboard(kbG, handle); buildHands(handsL);
+if(matchMedia('(pointer:coarse)').matches) $('#touchNote').style.display='block';
+renderHome();
+})();
+</script>
+</body>
+</html>
